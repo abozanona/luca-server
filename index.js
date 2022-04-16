@@ -12,6 +12,7 @@ const corsOptions = {
     }
 }
 
+
 const server = express()
     .use(cors(corsOptions))
     .use((req, res) => {
