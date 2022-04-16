@@ -32,7 +32,11 @@ const io = socketIO(server, {
             });
             res.end();
         }
-    }
+    },
+    allowRequest: (req, callback) => {
+        const noOriginHeader = req.headers.origin === undefined;
+        callback(null, true);
+      }
 });
 
 io.engine.on("headers", (headers, req) => {
