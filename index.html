@@ -16,12 +16,12 @@
 
         // Get WebSocket
         
-        var socket = io('https://abozanona-luca.herokuapp.com', {
+        var socket = io('wss://abozanona-luca.herokuapp.com/socket.io/socket.io.js', {
             // withCredentials: false,
-            path: '/socket.io/socket.io.js'
+            // path: '/socket.io/socket.io.js'
         });
         
-        // socket = io();
+        socket = io();
         
         // Get DOM elements
         var input = document.getElementById("input");
