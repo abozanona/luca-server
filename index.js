@@ -16,9 +16,6 @@ const io = socketIO(server, {
         origin: "*",
         handlePreflightRequest: (req, res) => {
             res.writeHead(200, {
-                "Access-Control-Allow-Origin": "https://example.com",
-                "Access-Control-Allow-Methods": "GET,POST",
-                "Access-Control-Allow-Headers": "my-custom-header",
                 "Access-Control-Allow-Credentials": true
             });
             res.end();
