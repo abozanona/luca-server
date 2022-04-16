@@ -14,7 +14,10 @@ const corsOptions = {
 
 const server = express()
     .use(cors(corsOptions))
-    .use((req, res) => res.sendFile(INDEX))
+    .use((req, res) => {
+        res.header('Access-Control-Allow-Credentials', true);
+        res.sendFile(INDEX);
+    })
     .listen(PORT, () => console.log("Listening on localhost:" + PORT));
 
 const io = socketIO(server, {
