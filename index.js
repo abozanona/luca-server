@@ -21,15 +21,16 @@ const server = express()
     .listen(PORT, () => console.log("Listening on localhost:" + PORT));
 
 const io = socketIO(server, {
-    // cors: {
-    //     origin: "*",
-    //     handlePreflightRequest: (req, res) => {
-    //         res.writeHead(200, {
-    //             "Access-Control-Allow-Credentials": true
-    //         });
-    //         res.end();
-    //     }
-    // }
+    cors: {
+        origin: "*",
+        credentials: true,
+        handlePreflightRequest: (req, res) => {
+            res.writeHead(200, {
+                "Access-Control-Allow-Credentials": true
+            });
+            res.end();
+        }
+    }
 });
 
 // Register "connection" events to the WebSocket
