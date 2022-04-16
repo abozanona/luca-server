@@ -1,26 +1,32 @@
 const express = require("express");
 const socketIO = require("socket.io");
 const path = require("path");
-const cors = require("cors")
 
 const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, 'index.html');
 
+const corsOptions = {
+    credentials: true, // This is important.
+    origin: (origin, callback) => {
+        return callback(null, true)
+    }
+}
+
 const server = express()
-    .use(cors())
+    .use(cors(corsOptions))
     .use((req, res) => res.sendFile(INDEX))
     .listen(PORT, () => console.log("Listening on localhost:" + PORT));
 
 const io = socketIO(server, {
-    cors: {
-        origin: "*",
-        handlePreflightRequest: (req, res) => {
-            res.writeHead(200, {
-                "Access-Control-Allow-Credentials": true
-            });
-            res.end();
-        }
-    }
+    // cors: {
+    //     origin: "*",
+    //     handlePreflightRequest: (req, res) => {
+    //         res.writeHead(200, {
+    //             "Access-Control-Allow-Credentials": true
+    //         });
+    //         res.end();
+    //     }
+    // }
 });
 
 // Register "connection" events to the WebSocket
