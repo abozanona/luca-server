@@ -35,6 +35,13 @@ const io = socketIO(server, {
     }
 });
 
+io.engine.on("headers", (headers, req) => {
+    headers["Access-Control-Allow-Origin"] = "*"
+    headers["Access-Control-Allow-Headers"] = "origin, x-requested-with, content-type"
+    headers["Access-Control-Allow-Methodsn"] = "PUT, GET, POST, DELETE, OPTIONS"
+    headers["Access-Control-Allow-Credentials"] = true
+})
+
 // Register "connection" events to the WebSocket
 io.on("connection", function (socket) {
     // Register "join" events, requested by a connected client
