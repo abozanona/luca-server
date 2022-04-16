@@ -23,9 +23,9 @@ const server = express()
     .listen(PORT, () => console.log("Listening on localhost:" + PORT));
 
 const io = socketIO(server, {
-    cors: {
+    cors: { 
         origin: "*",
-        credentials: true,
+        credentials: false,
         handlePreflightRequest: (req, res) => {
             res.writeHead(200, {
                 "Access-Control-Allow-Credentials": true
