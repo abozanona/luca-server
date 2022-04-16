@@ -9,44 +9,38 @@
 
 <body>
 
-    <!-- File input and image output -->
-    <input type="file" id="input">
-    <img src="" id="output">
+    <input type="button" id="send" value="hhhhhhhh">
 
     <!-- Client Code -->
     <script type="text/javascript">
 
         // Get WebSocket
-        var socket = io();
-
+        
+        var socket = io('https://abozanona-luca.herokuapp.com', {
+            withCredentials: false,
+            path: '/socket.io/socket.io.js'
+        });
+        
+        socket = io();
+        
         // Get DOM elements
         var input = document.getElementById("input");
-        var output = document.getElementById("output");
+        var send = document.getElementById("send");
 
         // Join a channel
         var room = "test";
         socket.emit("join", room);
 
         // Listen to file input events
-        document.getElementById("input").addEventListener("change", function (event) {
+        document.getElementById("send").addEventListener("click", function (event) {
 
-            // Prepeare file reader
-            var file = event.target.files[0];
-            var fileReader = new FileReader();
-
-            fileReader.onloadend = function (event) {
-                // Send an image event to the socket
-                var image = event.target.result
-                output.src = image;
-                socket.emit("image", image);
-            };
-
-            // Read file
-            fileReader.readAsDataURL(file);
+            socket.emit("seek", {
+                time: 20
+            });
         })
 
-        socket.on("image", function (image) {
-            output.src = image;
+        socket.on("seek", function (data) {
+            alert(data.time);
         });
     </script>
 </body>
