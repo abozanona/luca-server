@@ -13,7 +13,16 @@ const server = express()
 
 const io = socketIO(server, {
     cors: {
-        origin: "*"
+        origin: "*",
+        handlePreflightRequest: (req, res) => {
+            res.writeHead(200, {
+                "Access-Control-Allow-Origin": "https://example.com",
+                "Access-Control-Allow-Methods": "GET,POST",
+                "Access-Control-Allow-Headers": "my-custom-header",
+                "Access-Control-Allow-Credentials": true
+            });
+            res.end();
+        }
     }
 });
 
