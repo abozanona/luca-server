@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>SocketIO Client</title>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://abozanona-luca.herokuapp.com/socket.io/socket.io.js"></script>
 </head>
 
 <body>
@@ -16,13 +16,13 @@
 
         // Get WebSocket
 
-        var socket = io('ws://abozanona-luca.herokuapp.com/', {
+        var socket = io('https://abozanona-luca.herokuapp.com/', {
             transports: ["websocket"],
-            // withCredentials: false,
-            path: '/socket.io/socket.io.js'
+            withCredentials: false,
+            path: '/socket.io'
         });
 
-        socket = io();
+        // socket = io();
 
         // Get DOM elements
         var input = document.getElementById("input");
