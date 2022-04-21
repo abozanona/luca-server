@@ -23,7 +23,7 @@ const server = express()
     .listen(PORT, () => console.log("Listening on localhost:" + PORT));
 
 const io = socketIO(server, {
-    cors: { 
+    cors: {
         origin: "*",
         credentials: false,
         handlePreflightRequest: (req, res) => {
@@ -36,7 +36,7 @@ const io = socketIO(server, {
     allowRequest: (req, callback) => {
         const noOriginHeader = req.headers.origin === undefined;
         callback(null, true);
-      }
+    }
 });
 
 io.engine.on("headers", (headers, req) => {
@@ -53,21 +53,25 @@ io.on("connection", function (socket) {
         socket.join(room)
         socket.on("play", function (message) {
             socket.broadcast.to(room).emit("play", {
+                pageId: message.pageId,
                 time: message.time
             });
         });
         socket.on("pause", function (message) {
             socket.broadcast.to(room).emit("pause", {
+                pageId: message.pageId,
                 time: message.time
             });
         });
         socket.on("seek", function (message) {
             socket.broadcast.to(room).emit("seek", {
+                pageId: message.pageId,
                 time: message.time
             });
         });
         socket.on("message", function (message) {
-            socket.broadcast.to(room).emit("seek", {
+            socket.broadcast.to(room).emit("message", {
+                pageId: message.pageId,
                 text: message.text
             });
         });
