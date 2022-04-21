@@ -15,14 +15,15 @@
     <script type="text/javascript">
 
         // Get WebSocket
-        
+
         var socket = io('ws://abozanona-luca.herokuapp.com/', {
+            transports: ["websocket"],
             // withCredentials: false,
             path: '/socket.io/socket.io.js'
         });
-        
+
         socket = io();
-        
+
         // Get DOM elements
         var input = document.getElementById("input");
         var send = document.getElementById("send");
