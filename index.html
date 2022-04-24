@@ -3,47 +3,38 @@
 
 <head>
     <meta charset="utf-8">
-    <title>SocketIO Client</title>
-    <script src="https://abozanona-luca.herokuapp.com/socket.io/socket.io.js"></script>
+    <title>Luca - Watch videos with friends</title>
+    <style>
+        #no-extension-found {
+            display: block;
+        }
+
+        #extension-found {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
 
-    <input type="button" id="send" value="hhhhhhhh">
+    <div id="no-extension-found">
+        Luca extension is not found on your device. You need to install it first in order to be able to join the movies
+        room.
+        <br />
+        <a href="#" target="_blank">Install Luca</a>
+    </div>
 
-    <!-- Client Code -->
-    <script type="text/javascript">
+    <div id="extension-found">
+        Your room is found.<br />
+        Follow the following steps to join the room:<br />
+        <ul>
+            <li>Open the following link to open the room page</li>
+            <li>Select the video you want to start the streaming on</li>
+            <li>Click on the start party button to join the room</li>
+            <li>Enjoy the show!</li>
+        </ul>
+    </div>
 
-        // Get WebSocket
-
-        var socket = io('https://abozanona-luca.herokuapp.com/', {
-            transports: ["websocket"],
-            withCredentials: false,
-            path: '/socket.io'
-        });
-
-        // socket = io();
-
-        // Get DOM elements
-        var input = document.getElementById("input");
-        var send = document.getElementById("send");
-
-        // Join a channel
-        var room = "test";
-        socket.emit("join", room);
-
-        // Listen to file input events
-        document.getElementById("send").addEventListener("click", function (event) {
-
-            socket.emit("seek", {
-                time: 20
-            });
-        })
-
-        socket.on("seek", function (data) {
-            alert(data.time);
-        });
-    </script>
 </body>
 
 </html>
