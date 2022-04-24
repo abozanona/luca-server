@@ -75,5 +75,11 @@ io.on("connection", function (socket) {
                 text: message.text
             });
         });
+        socket.on("reaction", function (message) {
+            socket.broadcast.to(room).emit("reaction", {
+                pageId: message.pageId,
+                name: message.name
+            });
+        });
     })
 });
