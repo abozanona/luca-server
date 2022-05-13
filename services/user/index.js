@@ -123,6 +123,5 @@ module.exports.createRoom = function (info) {
         }).catch((err) => {
             return reject({ code: 'ERR_GET_ROOMS' });
         });
-        return resolve(arrayNewCards);
     });
 }
