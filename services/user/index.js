@@ -57,7 +57,7 @@ module.exports.register = function (info) {
             db.User.create(info).then(function (newUser) {
                 if (!newUser) {
                     return reject({ code: 'ERR_SAVE_USER' });
-                } else { 
+                } else {
                     db.User.findOne({
                         where: {
                             id: newUser.id,
@@ -116,10 +116,13 @@ module.exports.createRoom = function (info) {
         if (!info || !info.name || !info.pageUrl || !info.ownerId || !info.visibility) {
             return reject({ code: 'MISSING_DATA' });
         };
-        db.Room.create({ name: info.name, pageUrl: info.pageUrl, ownerId: info.ownerId, visibility: info.visibility });
+        db.Room.create({
+            name: info.name, pageUrl: info.pageUrl, ownerId: info.ownerId, visibility: info.visibility
+        }).then((rooms) => {
+            return resolve(rooms);
+        }).catch((err) => {
+            return reject({ code: 'ERR_GET_ROOMS' });
+        });
         return resolve(arrayNewCards);
-    }).catch((err) => {
-        console.error(err)
-        return reject({ code: 'ERR_CREATE_ROOM' });
     });
 }
