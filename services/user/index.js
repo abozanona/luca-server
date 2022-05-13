@@ -57,7 +57,7 @@ module.exports.register = function (info) {
             db.User.create(info).then(function (newUser) {
                 if (!newUser) {
                     return reject({ code: 'ERR_SAVE_USER' });
-                } else {
+                } else { 
                     db.User.findOne({
                         where: {
                             id: newUser.id,
