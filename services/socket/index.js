@@ -1,5 +1,5 @@
 const socketIO = require("socket.io");
-var userServices = require('../../services/user');
+// var userServices = require('../../services/user');
 
 module.exports.createSocket = function (server) {
     const io = socketIO(server, {
@@ -28,6 +28,7 @@ module.exports.createSocket = function (server) {
 
     io.on("connection", function (socket) {
         socket.on("join", function (room) {
+            console.log("room", room);
             socket.join(room);
             // userServices.createRoom({
             //     name: 'foo',
@@ -60,6 +61,7 @@ module.exports.createSocket = function (server) {
                 });
             });
             socket.on("reaction", function (message) {
+                console.log("reaction", message);
                 socket.broadcast.to(room).emit("reaction", {
                     pageId: message.pageId,
                     name: message.name
