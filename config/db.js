@@ -33,8 +33,8 @@ sequelize
         console.error('Unable to connect to the database');
     });
 
-setInterval(function () {
-    sequelize.query('SELECT 1');
-}, 5000);
+// setInterval(function () {
+//     sequelize.query('SELECT 1');
+// }, 5000);
 
 module.exports = sequelize;
