@@ -8,7 +8,11 @@ router.use(function (req, res, next) {
 
     if (str.substr(-1) != '/') str += '/';
     var token = req.headers.authorization || req.body.token;
-    if (str.startsWith('/api/')) {
+    if (str.startsWith('/party')) {
+        next();
+        return;
+    }
+    else if (str.startsWith('/api')) {
         if (str == "/api/user/login/" || str == "/api/user/signup/") {
             next();
             return;
