@@ -39,32 +39,37 @@ module.exports.createSocket = function (server) {
             socket.on("play", function (message) {
                 socket.broadcast.to(room).emit("play", {
                     pageId: message.pageId,
-                    time: message.time
+                    time: message.time,
+                    sender: message.sender,
                 });
             });
             socket.on("pause", function (message) {
                 socket.broadcast.to(room).emit("pause", {
                     pageId: message.pageId,
-                    time: message.time
+                    time: message.time,
+                    sender: message.sender,
                 });
             });
             socket.on("seek", function (message) {
                 socket.broadcast.to(room).emit("seek", {
                     pageId: message.pageId,
-                    time: message.time
+                    time: message.time,
+                    sender: message.sender,
                 });
             });
             socket.on("message", function (message) {
                 socket.broadcast.to(room).emit("message", {
                     pageId: message.pageId,
-                    text: message.text
+                    text: message.text,
+                    sender: message.sender,
                 });
             });
             socket.on("reaction", function (message) {
                 console.log("reaction", message);
                 socket.broadcast.to(room).emit("reaction", {
                     pageId: message.pageId,
-                    name: message.name
+                    name: message.name,
+                    sender: message.sender,
                 });
             });
         })
