@@ -34,6 +34,7 @@ app.use((req, res) => {
 app.use('/', require('./routes/index'));
 
 app.use('/api/user', require('./routes/user'));
+app.use('/api/public', require('./routes/public'));
 app.use('/party', require('./routes/party'));
 
 // error handler

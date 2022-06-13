@@ -16,9 +16,13 @@ router.use(function (req, res, next) {
         if (str == "/api/user/login/" || str == "/api/user/signup/") {
             next();
             return;
+        } else if (str.startsWith("/api/public/")) {
+            next();
+            return;
         } else {
             if (str.startsWith("/api/user")) {
                 if (token) {
+                    token = token.replace('Bearer ', '');
                     authService.extractUIDUser(token, function (err, decodedx) {
                         if (err) {
                             return res.json({

@@ -125,3 +125,33 @@ module.exports.createRoom = function (info) {
         });
     });
 }
+
+module.exports.follwoUser = function (info) {
+    return new Promise(function (resolve, reject) {
+        if (!info || !info.currentUserId || !info.otherUserId) {
+            return reject({ code: 'MISSING_DATA' });
+        };
+        db.Friendship.create({
+            requesterId: info.currentUserId, addressedId: info.otherUserId
+        }).then((friendship) => {
+            return resolve(friendship);
+        }).catch((err) => {
+            return reject({ code: 'ERR_FOLLOW_USER' });
+        });
+    });
+}
+
+module.exports.unfollwoUser = function (info) {
+    return new Promise(function (resolve, reject) {
+        if (!info || !info.currentUserId || !info.otherUserId) {
+            return reject({ code: 'MISSING_DATA' });
+        };
+        db.Friendship.destroy({
+            where: { requesterId: info.currentUserId, addressedId: info.otherUserId },
+        }).then((rooms) => {
+            return resolve(rooms);
+        }).catch((err) => {
+            return reject({ code: 'ERR_UNFOLLOW_USER' });
+        });
+    });
+}
