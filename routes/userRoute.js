@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var userServices = require('../../services/user');
+var userServices = require('../services/userService');
 
 router.post('/login', function (req, res, next) {
     var info = {
@@ -45,19 +45,6 @@ router.get('/me', function (req, res, next) {
             res.json(e);
         });
 });
-router.get('/rooms', function (req, res, next) {
-    var info = {
-        userId: req.decoded.uid,
-    };
-    userServices
-        .getRooms(info)
-        .then((u) => {
-            res.json({ result: u });
-        })
-        .catch((e) => {
-            res.json(e);
-        });
-});
 router.post('/room', function (req, res, next) {
     var info = {
         ownerId: req.decoded.uid,
@@ -65,8 +52,36 @@ router.post('/room', function (req, res, next) {
         pageUrl: req.body.pageUrl,
         visibility: req.body.visibility,
     };
-    vendorsServices
+    userServices
         .createRoom(info)
+        .then((u) => {
+            res.json({ result: u });
+        })
+        .catch((e) => {
+            res.json(e);
+        });
+});
+router.post('/follow', function (req, res, next) {
+    var info = {
+        currentUserId: req.decoded.uid,
+        otherUserId: req.body.user,
+    };
+    userServices
+        .follwoUser(info)
+        .then((u) => {
+            res.json({ result: u });
+        })
+        .catch((e) => {
+            res.json(e);
+        });
+});
+router.post('/unfollow', function (req, res, next) {
+    var info = {
+        currentUserId: req.decoded.uid,
+        otherUserId: req.body.user,
+    };
+    userServices
+        .unfollwoUser(info)
         .then((u) => {
             res.json({ result: u });
         })

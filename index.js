@@ -3,7 +3,7 @@ const express = require("express");
 const path = require("path");
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const socketSrevice = require('./services/socket')
+const socketSrevice = require('./services/socketService')
 
 const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, 'index.html');
@@ -33,8 +33,9 @@ app.use((req, res) => {
 
 app.use('/', require('./routes/index'));
 
-app.use('/api/user', require('./routes/user'));
-app.use('/party', require('./routes/party'));
+app.use('/api/user', require('./routes/userRoute'));
+app.use('/api/public', require('./routes/publicRoute'));
+app.use('/party', require('./routes/partyRoute'));
 
 // error handler
 // app.use(function (err, req, res, next) {
