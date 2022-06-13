@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-var userServices = require('../../services/user');
+var userServices = require('../services/userService');
 
 router.get('/rooms', function (req, res, next) {
     var info = {

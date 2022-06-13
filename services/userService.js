@@ -1,8 +1,8 @@
-var db = require('../../models');
+var db = require('../models');
 var bCrypt = require('bcryptjs');
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-var authService = require('../authService');
+var authService = require('./authService');
 
 
 module.exports.checkPassword = function (hash, password) {
