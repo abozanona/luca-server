@@ -28,14 +28,17 @@ module.exports.createSocket = function (server) {
 
     io.on("connection", function (socket) {
         socket.on("join", function (room) {
-            console.log("room", room);
             socket.join(room);
-            // userServices.createRoom({
-            //     name: 'foo',
-            //     pageUrl: 'bar',
-            //     ownerId: 1,
-            //     visibility: 'visible'
-            // });
+            userServices.createRoom({
+                name: 'foo',
+                pageUrl: 'bar',
+                ownerId: 1,
+                visibility: 'visible'
+            });
+            socket.broadcast.to(room).emit("join", {
+                pageId: message.pageId,
+                sender: message.sender,
+            });
             socket.on("play", function (message) {
                 socket.broadcast.to(room).emit("play", {
                     pageId: message.pageId,

@@ -1,8 +1,8 @@
-var db = require('../../models');
+var db = require('../models');
 var bCrypt = require('bcryptjs');
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-var authService = require('../authService');
+var authService = require('./authService');
 
 
 module.exports.checkPassword = function (hash, password) {
@@ -122,6 +122,36 @@ module.exports.createRoom = function (info) {
             return resolve(rooms);
         }).catch((err) => {
             return reject({ code: 'ERR_GET_ROOMS' });
+        });
+    });
+}
+
+module.exports.follwoUser = function (info) {
+    return new Promise(function (resolve, reject) {
+        if (!info || !info.currentUserId || !info.otherUserId) {
+            return reject({ code: 'MISSING_DATA' });
+        };
+        db.Friendship.create({
+            requesterId: info.currentUserId, addressedId: info.otherUserId
+        }).then((friendship) => {
+            return resolve(friendship);
+        }).catch((err) => {
+            return reject({ code: 'ERR_FOLLOW_USER' });
+        });
+    });
+}
+
+module.exports.unfollwoUser = function (info) {
+    return new Promise(function (resolve, reject) {
+        if (!info || !info.currentUserId || !info.otherUserId) {
+            return reject({ code: 'MISSING_DATA' });
+        };
+        db.Friendship.destroy({
+            where: { requesterId: info.currentUserId, addressedId: info.otherUserId },
+        }).then((rooms) => {
+            return resolve(rooms);
+        }).catch((err) => {
+            return reject({ code: 'ERR_UNFOLLOW_USER' });
         });
     });
 }
