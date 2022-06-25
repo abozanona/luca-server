@@ -4,7 +4,6 @@ var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 var authService = require('./authService');
 
-
 module.exports.checkPassword = function (hash, password) {
     return bCrypt.compareSync(password, hash);
 }

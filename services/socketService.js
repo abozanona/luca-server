@@ -1,5 +1,6 @@
 const socketIO = require("socket.io");
-// var userServices = require('../../services/user');
+var userServices = require('../services/userService');
+var videoCallService = require('./videoCallService');
 
 module.exports.createSocket = function (server) {
     const io = socketIO(server, {
@@ -27,49 +28,52 @@ module.exports.createSocket = function (server) {
     })
 
     io.on("connection", function (socket) {
-        socket.on("join", function (room) {
-            socket.join(room);
+        socket.on("join", async function (data) {
+            socket.join(data.roomId);
+            const videoToken = await videoCallService.generateRTCToken(data.roomId, data.sender.userId, 'publisher', 'uid');
             userServices.createRoom({
-                name: 'foo',
-                pageUrl: 'bar',
-                ownerId: 1,
-                visibility: 'visible'
+                name: data.roomId,
+                pageUrl: data.pageUrl,
+                ownerId: data.sender.userId,
+                visibility: data.visibility,
             });
-            socket.broadcast.to(room).emit("join", {
-                pageId: message.pageId,
-                sender: message.sender,
+            socket.emit('videoToken', {
+                videoToken: videoToken.token,
+            });
+            socket.broadcast.to(data).emit("join", {
+                pageId: 'NONE',
+                sender: data.sender,
             });
             socket.on("play", function (message) {
-                socket.broadcast.to(room).emit("play", {
+                socket.broadcast.to(data).emit("play", {
                     pageId: message.pageId,
                     time: message.time,
                     sender: message.sender,
                 });
             });
             socket.on("pause", function (message) {
-                socket.broadcast.to(room).emit("pause", {
+                socket.broadcast.to(data).emit("pause", {
                     pageId: message.pageId,
                     time: message.time,
                     sender: message.sender,
                 });
             });
             socket.on("seek", function (message) {
-                socket.broadcast.to(room).emit("seek", {
+                socket.broadcast.to(data).emit("seek", {
                     pageId: message.pageId,
                     time: message.time,
                     sender: message.sender,
                 });
             });
             socket.on("message", function (message) {
-                socket.broadcast.to(room).emit("message", {
+                socket.broadcast.to(data).emit("message", {
                     pageId: message.pageId,
                     text: message.text,
                     sender: message.sender,
                 });
             });
             socket.on("reaction", function (message) {
-                console.log("reaction", message);
-                socket.broadcast.to(room).emit("reaction", {
+                socket.broadcast.to(data).emit("reaction", {
                     pageId: message.pageId,
                     name: message.name,
                     sender: message.sender,
