@@ -37,6 +37,13 @@ app.use('/api/user', require('./routes/userRoute'));
 app.use('/api/public', require('./routes/publicRoute'));
 app.use('/party', require('./routes/partyRoute'));
 
+const nocache = (_, resp, next) => {
+    resp.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    resp.header('Expires', '-1');
+    resp.header('Pragma', 'no-cache');
+    next();
+}
+
 // error handler
 // app.use(function (err, req, res, next) {
 //     // set locals, only providing error in development
