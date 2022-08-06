@@ -45,35 +45,35 @@ module.exports.createSocket = function (server) {
                 sender: data.sender,
             });
             socket.on("play", function (message) {
-                socket.broadcast.to(data).emit("play", {
+                socket.broadcast.to(data.roomId).emit("play", {
                     pageId: message.pageId,
                     time: message.time,
                     sender: message.sender,
                 });
             });
             socket.on("pause", function (message) {
-                socket.broadcast.to(data).emit("pause", {
+                socket.broadcast.to(data.roomId).emit("pause", {
                     pageId: message.pageId,
                     time: message.time,
                     sender: message.sender,
                 });
             });
             socket.on("seek", function (message) {
-                socket.broadcast.to(data).emit("seek", {
+                socket.broadcast.to(data.roomId).emit("seek", {
                     pageId: message.pageId,
                     time: message.time,
                     sender: message.sender,
                 });
             });
             socket.on("message", function (message) {
-                socket.broadcast.to(data).emit("message", {
+                socket.broadcast.to(data.roomId).emit("message", {
                     pageId: message.pageId,
                     text: message.text,
                     sender: message.sender,
                 });
             });
             socket.on("reaction", function (message) {
-                socket.broadcast.to(data).emit("reaction", {
+                socket.broadcast.to(data.roomId).emit("reaction", {
                     pageId: message.pageId,
                     name: message.name,
                     sender: message.sender,
