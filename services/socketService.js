@@ -2,6 +2,44 @@ const socketIO = require("socket.io");
 var userServices = require('../services/userService');
 var videoCallService = require('./videoCallService');
 
+function initSocketEvents(socket, roomId) {
+    socket.on("play", function (message) {
+        socket.broadcast.to(roomId).emit("play", {
+            pageId: message.pageId,
+            time: message.time,
+            sender: message.sender,
+        });
+    });
+    socket.on("pause", function (message) {
+        socket.broadcast.to(roomId).emit("pause", {
+            pageId: message.pageId,
+            time: message.time,
+            sender: message.sender,
+        });
+    });
+    socket.on("seek", function (message) {
+        socket.broadcast.to(roomId).emit("seek", {
+            pageId: message.pageId,
+            time: message.time,
+            sender: message.sender,
+        });
+    });
+    socket.on("message", function (message) {
+        socket.broadcast.to(roomId).emit("message", {
+            pageId: message.pageId,
+            text: message.text,
+            sender: message.sender,
+        });
+    });
+    socket.on("reaction", function (message) {
+        socket.broadcast.to(roomId).emit("reaction", {
+            pageId: message.pageId,
+            name: message.name,
+            sender: message.sender,
+        });
+    });
+}
+
 module.exports.createSocket = function (server) {
     const io = socketIO(server, {
         cors: {
@@ -28,6 +66,14 @@ module.exports.createSocket = function (server) {
     })
 
     io.on("connection", function (socket) {
+        socket.on("rejoinRoom", async function (data) {
+            socket.join(data.roomId);
+            socket.broadcast.to(data).emit("join", {
+                pageId: 'NONE',
+                sender: data.sender,
+            });
+            initSocketEvents(socket, data.roomId);
+        });
         socket.on("join", async function (data) {
             socket.join(data.roomId);
             const videoToken = await videoCallService.generateRTCToken(data.roomId, data.sender.userId, 'publisher', 'uid');
@@ -44,41 +90,7 @@ module.exports.createSocket = function (server) {
                 pageId: 'NONE',
                 sender: data.sender,
             });
-            socket.on("play", function (message) {
-                socket.broadcast.to(data.roomId).emit("play", {
-                    pageId: message.pageId,
-                    time: message.time,
-                    sender: message.sender,
-                });
-            });
-            socket.on("pause", function (message) {
-                socket.broadcast.to(data.roomId).emit("pause", {
-                    pageId: message.pageId,
-                    time: message.time,
-                    sender: message.sender,
-                });
-            });
-            socket.on("seek", function (message) {
-                socket.broadcast.to(data.roomId).emit("seek", {
-                    pageId: message.pageId,
-                    time: message.time,
-                    sender: message.sender,
-                });
-            });
-            socket.on("message", function (message) {
-                socket.broadcast.to(data.roomId).emit("message", {
-                    pageId: message.pageId,
-                    text: message.text,
-                    sender: message.sender,
-                });
-            });
-            socket.on("reaction", function (message) {
-                socket.broadcast.to(data.roomId).emit("reaction", {
-                    pageId: message.pageId,
-                    name: message.name,
-                    sender: message.sender,
-                });
-            });
+            initSocketEvents(socket, data.roomId);
         })
     });
 }
