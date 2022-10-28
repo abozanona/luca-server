@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var userServices = require('../services/userService');
+// var userServices = require('../services/userService');
 
 router.post('/login', function (req, res, next) {
     var info = {
